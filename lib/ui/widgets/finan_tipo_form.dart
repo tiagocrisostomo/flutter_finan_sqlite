@@ -28,21 +28,31 @@ class _FormularioFinanTipoState extends State<FormularioFinanTipo> {
     final store = Provider.of<FinanTipoViewModel>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastrar/Alterar Tipo(s)', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+      appBar: AppBar(
+        title: Text(
+          'Cadastrar/Alterar Tipo(s)',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 32, right: 32, top: 8),
         child: Form(
           key: _formKey,
           child: ListView(
-            // mainAxisSize: MainAxisSize.min, // tamanho automático
             children: [
               TextFormField(
                 controller: _nomeController,
-                decoration: InputDecoration(labelText: 'Descrição'),
-                validator: (v) => v == null || v.isEmpty ? 'Informe a descrição' : null,
+                decoration: InputDecoration(
+                  labelText: 'Descrição',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  prefixIcon: Icon(Icons.type_specimen_rounded),
+                ),
+                validator:
+                    (v) =>
+                        v == null || v.isEmpty ? 'Informe a descrição' : null,
               ),
-              SizedBox(height: 16),
-
               SizedBox(height: 16),
               ElevatedButton.icon(
                 icon: Icon(Icons.save),
@@ -50,7 +60,12 @@ class _FormularioFinanTipoState extends State<FormularioFinanTipo> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     // Adicione a lógica para salvar o tipo aqui
-                    await store.adicionarTipo(FinanTipo(id: widget.tipo?.id, descricao: _nomeController.text.trim()));
+                    await store.adicionarTipo(
+                      FinanTipo(
+                        id: widget.tipo?.id,
+                        descricao: _nomeController.text.trim(),
+                      ),
+                    );
 
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context); // fecha o BottomSheet

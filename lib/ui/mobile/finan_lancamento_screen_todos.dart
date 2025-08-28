@@ -352,11 +352,11 @@ class _FinanLancamentoScreenTodosState
                     ),
                   ),
                 ),
-                onPressed: () async {
-                  await store.removerLancamento(id);
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                onPressed: () {
+                   store.removerLancamento(id);
+                  // WidgetsBinding.instance.addPostFrameCallback((_) {
                     Navigator.of(context).pop();
-                  });
+                  // });
                 },
                 child: const Text('Excluir'),
               ),

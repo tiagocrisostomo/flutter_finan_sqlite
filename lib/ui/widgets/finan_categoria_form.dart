@@ -1,15 +1,16 @@
 import 'package:db_sqlite/model/finan_categoria.dart';
 import 'package:db_sqlite/viewmodel/finan_categoria_viewmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 // import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:provider/provider.dart';
 
 class FormularioFinanCategoria extends StatefulWidget {
   final FinanCategoria? categoria;
   const FormularioFinanCategoria({super.key, this.categoria});
 
   @override
-  State<FormularioFinanCategoria> createState() => _FormularioFinanCategoriaState();
+  State<FormularioFinanCategoria> createState() =>
+      _FormularioFinanCategoriaState();
 }
 
 class _FormularioFinanCategoriaState extends State<FormularioFinanCategoria> {
@@ -20,13 +21,14 @@ class _FormularioFinanCategoriaState extends State<FormularioFinanCategoria> {
   @override
   void initState() {
     super.initState();
-    _descricaoController = TextEditingController(text: widget.categoria?.descricao ?? '');
+    _descricaoController = TextEditingController(
+      text: widget.categoria?.descricao ?? '',
+    );
     // _corSelecionada = widget.categoria?.cor ?? '#FF0000';
   }
 
   // void _abrirSeletorDeCor() {
   //   Color pickerColor = Color(int.parse(_corSelecionada!.replaceAll("#", "0xFF")));
-
   //   showDialog(
   //     context: context,
   //     builder:
@@ -52,30 +54,47 @@ class _FormularioFinanCategoriaState extends State<FormularioFinanCategoria> {
     final store = Provider.of<FinanCategoriaViewModel>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastrar/Alterar Categoria(s)', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+      appBar: AppBar(
+        title: Text(
+          'Cadastrar/Alterar Categoria(s)',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(left: 32, right: 32, top: 8),
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: ListView(
             children: [
               TextFormField(
                 controller: _descricaoController,
-                decoration: InputDecoration(labelText: 'Descrição'),
-                validator: (v) => v == null || v.isEmpty ? 'Informe a descrição' : null,
+                decoration: InputDecoration(
+                  labelText: 'Descrição',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  prefixIcon: Icon(Icons.type_specimen_rounded),
+                ),
+                validator:
+                    (v) =>
+                        v == null || v.isEmpty ? 'Informe a descrição' : null,
               ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  const Text("Cor:"),
-                  const SizedBox(width: 8),
-                  // GestureDetector(
-                  //   onTap: _abrirSeletorDeCor,
-                  //   child: CircleAvatar(backgroundColor: Color(int.parse(_corSelecionada!.replaceAll("#", "0xFF"))), radius: 20),
-                  // ),
-                ],
-              ),
+              // SizedBox(height: 16),
+              // Row(
+              //   children: [
+              //     const Text("Cor:"),
+              //     const SizedBox(width: 8),
+              //     GestureDetector(
+              //       onTap: _abrirSeletorDeCor,
+              //       child: CircleAvatar(
+              //         backgroundColor: Color(
+              //           int.parse(_corSelecionada!.replaceAll("#", "0xFF")),
+              //         ),
+              //         radius: 20,
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(height: 16),
               ElevatedButton.icon(
                 icon: Icon(Icons.save),
@@ -84,8 +103,12 @@ class _FormularioFinanCategoriaState extends State<FormularioFinanCategoria> {
                   // Adicione a lógica para salvar a categoria aqui
                   if (_formKey.currentState!.validate()) {
                     // Adicione a lógica para salvar o tipo aqui
-                    await store.adicionarCategoria(FinanCategoria(id: widget.categoria?.id, descricao: _descricaoController.text.trim()));
-
+                    await store.adicionarCategoria(
+                      FinanCategoria(
+                        id: widget.categoria?.id,
+                        descricao: _descricaoController.text.trim(),
+                      ),
+                    );
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context); // fecha o BottomSheet
                   }

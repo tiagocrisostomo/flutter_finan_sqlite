@@ -9,14 +9,15 @@ class FinanLancamentoDAO {
     await db.insert(_tableName, lancamento.toMap());
   }
 
-  Future<void> atualizar(FinanLancamento lancamento) async {
+  Future<int> atualizar(FinanLancamento lancamento) async {
     final db = await BancoDeDados.banco;
-    await db.update(_tableName, lancamento.toMap(), where: 'id = ?', whereArgs: [lancamento.id]);
+    return await db.update(_tableName, lancamento.toMap(),
+    where: 'id = ?', whereArgs: [lancamento.id]);
   }
 
-  Future<void> deletar(int id) async {
+  Future<int> deletar(int id) async {
     final db = await BancoDeDados.banco;
-    await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
+    return await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<FinanLancamento>> listarTodos() async {
@@ -30,7 +31,7 @@ class FinanLancamentoDAO {
       fl.usuarioId,
       fc.descricao AS categoriaDescricao,
       ft.descricao AS tipoDescricao,
-      u.nome AS usuarioNome  
+      u.nome AS usuarioNome
      FROM finan_lancamento fl
      INNER JOIN finan_categoria fc ON fl.categoriaId = fc.id
      INNER JOIN finan_tipo ft ON fl.tipoId = ft.id
@@ -53,7 +54,7 @@ class FinanLancamentoDAO {
       fl.usuarioId,
       fc.descricao AS categoriaDescricao,
       ft.descricao AS tipoDescricao,
-      u.nome AS usuarioNome  
+      u.nome AS usuarioNome
      FROM finan_lancamento fl
      INNER JOIN finan_categoria fc ON fl.categoriaId = fc.id
      INNER JOIN finan_tipo ft ON fl.tipoId = ft.id
@@ -83,7 +84,7 @@ class FinanLancamentoDAO {
 
   Future<List<Map>> totalPorCategoria() async {
     final db = await BancoDeDados.banco;
-    final result = await db.rawQuery('''SELECT fc.descricao as categoria, SUM(fl.valor) as total 
+    final result = await db.rawQuery('''SELECT fc.descricao as categoria, SUM(fl.valor) as total
          FROM finan_lancamento fl
          INNER JOIN finan_categoria fc ON fl.categoriaId = fc.id
          GROUP BY fc.descricao

@@ -103,3 +103,4 @@ flutter pub get
 flutter run
 
 ## 📸 Funcionamento
+![Demonstração do sistema](demo.gif)

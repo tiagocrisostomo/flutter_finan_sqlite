@@ -37,8 +37,8 @@ class Aplicacao extends StatelessWidget {
         primaryColor: Colors.green.shade400,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: Colors.green.shade600,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.white70,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.black26,
           showUnselectedLabels: false,
         ),
         appBarTheme: AppBarTheme(
@@ -59,7 +59,7 @@ class Aplicacao extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Colors.black),
+            backgroundColor: WidgetStatePropertyAll(Colors.green.shade600),
             foregroundColor: WidgetStatePropertyAll(Colors.white),
             shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -83,6 +83,12 @@ class Aplicacao extends StatelessWidget {
         useMaterial3: true,
         brightness: Brightness.dark,
         primaryColor: Colors.blueGrey,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.green.shade600,
+          selectedItemColor: Colors.black26,
+          unselectedItemColor: Colors.white,
+          showUnselectedLabels: false,
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             backgroundColor: WidgetStatePropertyAll(Colors.white),

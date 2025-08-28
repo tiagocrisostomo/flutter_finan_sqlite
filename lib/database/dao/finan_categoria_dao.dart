@@ -18,7 +18,8 @@ class FinanCategoriaDAO {
 
   Future<int> atualizar(FinanCategoria finanCategoria) async {
     final db = await BancoDeDados.banco;
-    return await db.update(_tableName, finanCategoria.toMap(), where: 'id = ?', whereArgs: [finanCategoria.id]);
+    return await db.update(_tableName, finanCategoria.toMap(),
+    where: 'id = ?', whereArgs: [finanCategoria.id]);
   }
 
   Future<int> deletar(int id) async {

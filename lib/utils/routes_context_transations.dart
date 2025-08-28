@@ -5,42 +5,42 @@ extension RouterContextExtension on BuildContext {
   Future pushRtL(Widget page) {
     return Navigator.push(
       this,
-      PageTransition(fullscreenDialog: false, type: PageTransitionType.rightToLeft, duration: const Duration(milliseconds: 400), child: page),
+      PageTransition(fullscreenDialog: false, type: PageTransitionType.rightToLeft, duration: const Duration(milliseconds: 300), child: page),
     );
   }
 
   Future pushRtLReplace(Widget page) {
     return Navigator.pushReplacement(
       this,
-      PageTransition(fullscreenDialog: false, type: PageTransitionType.rightToLeft, duration: const Duration(milliseconds: 400), child: page),
+      PageTransition(fullscreenDialog: false, type: PageTransitionType.rightToLeft, duration: const Duration(milliseconds: 300), child: page),
     );
   }
 
   Future pushRtLModal(Widget page) {
     return Navigator.push(
       this,
-      PageTransition(fullscreenDialog: true, type: PageTransitionType.rightToLeft, duration: const Duration(milliseconds: 400), child: page),
+      PageTransition(fullscreenDialog: true, type: PageTransitionType.rightToLeft, duration: const Duration(milliseconds: 300), child: page),
     );
   }
 
   Future pushBtTModal(Widget page) {
     return Navigator.push(
       this,
-      PageTransition(fullscreenDialog: true, type: PageTransitionType.bottomToTop, duration: const Duration(milliseconds: 400), child: page),
+      PageTransition(fullscreenDialog: true, type: PageTransitionType.bottomToTop, duration: const Duration(milliseconds: 300), child: page),
     );
   }
 
   Future pushLtR(Widget page) {
     return Navigator.push(
       this,
-      PageTransition(fullscreenDialog: false, type: PageTransitionType.leftToRight, duration: const Duration(milliseconds: 400), child: page),
+      PageTransition(fullscreenDialog: false, type: PageTransitionType.leftToRight, duration: const Duration(milliseconds: 300), child: page),
     );
   }
 
   Future pushBtT(Widget page) {
     return Navigator.push(
       this,
-      PageTransition(fullscreenDialog: false, type: PageTransitionType.bottomToTop, duration: const Duration(milliseconds: 400), child: page),
+      PageTransition(fullscreenDialog: false, type: PageTransitionType.bottomToTop, duration: const Duration(milliseconds: 300), child: page),
     );
   }
 

@@ -97,12 +97,12 @@ class _FinanLancamentoScreenState extends State<FinanLancamentoScreen> {
             slivers: [
               SliverAppBar(
                 pinned: true,
-                title: Text('Lançamentos Financeiros'),
+                title: Text('Lançamentos Financeiros Mês'),
                 actions: [
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.add_box_rounded,
-                      color: Colors.black,
+                      color: Colors.grey.shade200,
                       size: 35,
                     ),
                     onPressed: () => context.pushRtL(FinanLancamentoForm()),
@@ -166,12 +166,13 @@ class _FinanLancamentoScreenState extends State<FinanLancamentoScreen> {
                         trailing: Container(
                           height: MediaQuery.sizeOf(context).height * 0.04,
                           decoration: BoxDecoration(
-                            // color: Colors.black,
+                            // color: Colors.green.shade600,
                             borderRadius: BorderRadius.circular(6),
                             // boxShadow: [
                             //   BoxShadow(
+                            //     spreadRadius: 0.1,
                             //     color: Colors.black26,
-                            //     blurRadius: 4,
+                            //     blurRadius: 0.1,
                             //     offset: Offset(0, 2),
                             //   ),
                             // ],
@@ -192,7 +193,7 @@ class _FinanLancamentoScreenState extends State<FinanLancamentoScreen> {
                               ),
                               VerticalDivider(),
                               IconButton(
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.delete_forever,
                                   color: Colors.red,
                                   size: 16,
@@ -211,91 +212,6 @@ class _FinanLancamentoScreenState extends State<FinanLancamentoScreen> {
             ],
           ),
         );
-
-        // ListView.builder(
-        //   shrinkWrap: true,
-        //   padding: EdgeInsets.all(8),
-        //   itemCount: store.lancamentosMes.length,
-        //   itemBuilder: (_, index) {
-        //     final lanc = store.lancamentosMes[index];
-        //     return Padding(
-        //       padding: const EdgeInsets.all(2.0),
-        //       child: ListTile(
-        //         shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(10),
-        //           side: BorderSide(color: Colors.blueGrey, width: 0.5),
-        //         ),
-        //         isThreeLine: false,
-        //         dense: true,
-        //         leading: CircleAvatar(
-        //           // maxRadius: MediaQuery.sizeOf(context).width * 0.07,
-        //           backgroundColor:
-        //               lanc.categoriaId == 1
-        //                   ? Colors.red.shade700
-        //                   : Colors.green.shade700,
-        //           child: Text(
-        //             lanc.tipoDescricao.toString(),
-        //             softWrap: true,
-        //             style: TextStyle(
-        //               fontSize: 12,
-        //               color: Colors.white,
-        //               fontWeight: FontWeight.bold,
-        //               overflow: TextOverflow.ellipsis,
-        //             ),
-        //           ),
-        //         ),
-        //         title: Text(
-        //           'R\$ ${lanc.valor.toStringAsFixed(2)}',
-        //           style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        //         ),
-        //         subtitle: Text(
-        //           '${lanc.categoriaDescricao.toString()} - ${DateFormat('dd/MM/yyyy').format(lanc.data as DateTime)} \n'
-        //           '${lanc.descricao.toString()}',
-        //           style: TextStyle(fontSize: 12, color: Colors.black54),
-        //         ),
-        //         trailing: Container(
-        //           height: MediaQuery.sizeOf(context).height * 0.04,
-        //           decoration: BoxDecoration(
-        //             // color: Colors.black,
-        //             borderRadius: BorderRadius.circular(6),
-        //             // boxShadow: [
-        //             //   BoxShadow(
-        //             //     color: Colors.black26,
-        //             //     blurRadius: 4,
-        //             //     offset: Offset(0, 2),
-        //             //   ),
-        //             // ],
-        //           ),
-        //           child: Row(
-        //             mainAxisSize: MainAxisSize.min,
-        //             children: [
-        //               IconButton(
-        //                 icon: const Icon(
-        //                   Icons.edit_square,
-        //                   color: Colors.blue,
-        //                   size: 16,
-        //                 ),
-        //                 onPressed:
-        //                     () => context.pushRtL(
-        //                       FinanLancamentoForm(lancamento: lanc),
-        //                     ),
-        //               ),
-        //               VerticalDivider(),
-        //               IconButton(
-        //                 icon: const Icon(
-        //                   Icons.delete_forever,
-        //                   color: Colors.red,
-        //                   size: 16,
-        //                 ),
-        //                 onPressed: () => _confirmarExclusao(context, lanc.id!),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //     );
-        //   },
-        // );
         break;
       default:
         corpo = Center(
@@ -304,22 +220,6 @@ class _FinanLancamentoScreenState extends State<FinanLancamentoScreen> {
     }
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text(
-      //     'Lançamentos Financeiros do mês',
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(
-      //         Icons.add_box_rounded,
-      //         color: Colors.black,
-      //         applyTextScaling: true,
-      //         size: 35,
-      //       ),
-      //       onPressed: () => context.pushRtL(FinanLancamentoForm()),
-      //     ),
-      //   ],
-      // ),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 55),
         child: corpo,
@@ -333,7 +233,7 @@ class _FinanLancamentoScreenState extends State<FinanLancamentoScreen> {
           icon: Icon(
             Icons.arrow_circle_right,
             size: 30,
-            color: Colors.black,
+            color: Colors.grey.shade200,
           ),
           label: Text(
             'Ver todos os lançamentos       ',
@@ -353,7 +253,6 @@ class _FinanLancamentoScreenState extends State<FinanLancamentoScreen> {
 
   void _confirmarExclusao(BuildContext context, int id) {
     final store = Provider.of<FinanLancamentoViewModel>(context, listen: false);
-
     showDialog(
       context: context,
       builder:
@@ -384,11 +283,11 @@ class _FinanLancamentoScreenState extends State<FinanLancamentoScreen> {
                     ),
                   ),
                 ),
-                onPressed: () async {
-                  await store.removerLancamento(id);
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    Navigator.of(context).pop();
-                  });
+                onPressed: () {
+                  store.removerLancamento(id);
+                  // WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context).pop();
+                  // });
                 },
                 child: const Text('Excluir'),
               ),
