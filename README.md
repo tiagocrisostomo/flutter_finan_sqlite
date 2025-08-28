@@ -11,8 +11,6 @@ Um projeto de referência em Flutter para gerenciamento de dados de finanças. A
 - **Flutter**
 - **SQLite** com `sqflite`
 - **Provider** (`ChangeNotifier`)
-- Estrutura modular (camadas: `Model`, `DAO`, `Service`, `Store`, `UI`)
-
 ---
 
 ## 📂 Estrutura de Pastas
@@ -93,7 +91,7 @@ lib/
 ✅ SnackBar para feedback de erros
 
 # Clone o repositório
-git clone https://github.com/seu-usuario/flutter-sqlite-modular.git
+git clone https://git@github.com:tiagocrisostomo/flutter_finan_sqlite.git
 
 # Navegue até a pasta
 cd flutter-sqlite-modular
