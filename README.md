@@ -102,5 +102,5 @@ flutter pub get
 # Execute o app
 flutter run
 
-## 📸 Funcionamento
-[![Assista à demonstração](https://img.youtube.com/vi/QBj3180AlKI/0.jpg)](https://www.youtube.com/watch?v=QBj3180AlKI)
+## 📸 Demo Funcionamento
+https://github.com/user-attachments/assets/9d975aaf-472a-4e6b-ba2b-b9d289ae3cc1
