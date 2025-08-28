@@ -103,4 +103,4 @@ flutter pub get
 flutter run
 
 ## 📸 Funcionamento
-![Demonstração do sistema](demo.gif)
+[![Assista à demonstração](https://img.youtube.com/vi/QBj3180AlKI/0.jpg)](https://www.youtube.com/watch?v=QBj3180AlKI)
