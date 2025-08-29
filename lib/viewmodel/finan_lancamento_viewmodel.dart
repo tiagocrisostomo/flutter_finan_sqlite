@@ -9,6 +9,7 @@ import 'package:db_sqlite/service/finan_categoria_service.dart';
 import 'package:db_sqlite/service/finan_lancamento_service.dart';
 import 'package:db_sqlite/service/finan_tipo_service.dart';
 import 'package:db_sqlite/service/usuario_service.dart';
+import 'package:db_sqlite/utils/agrupar_lancamentos_por_mes.dart';
 import 'package:flutter/material.dart';
 
 enum EstadoLancamento {
@@ -66,6 +67,9 @@ class FinanLancamentoViewModel extends ChangeNotifier {
 
   double get saldoTotal => totalAreceber - totalApagar;
 
+  Map<String, List<FinanLancamento>> _agrupados = {};
+  Map<String, List<FinanLancamento>> get agrupados => _agrupados;
+
   Future<void> carregarLancamentos() async {
     // Evita carregamento duplo
     if (_estado == EstadoLancamento.carregando) return;
@@ -75,6 +79,7 @@ class FinanLancamentoViewModel extends ChangeNotifier {
 
     try {
       _lancamentos = await _service.buscarLancamentos();
+      _agrupados = await agruparPorMes(_lancamentos);
       _estado = EstadoLancamento.carregado;
     } catch (e) {
       _estado = EstadoLancamento.erro;
