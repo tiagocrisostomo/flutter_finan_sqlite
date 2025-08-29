@@ -1,13 +1,26 @@
 import 'dart:io';
+
+import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
 import 'package:db_sqlite/model/usuario.dart';
 import 'package:db_sqlite/service/usuario_service.dart';
 import 'package:db_sqlite/utils/logger_service.dart';
 import 'package:flutter/material.dart';
 
-enum EstadoUsuario { inicial, carregando, carregado, erro, deletando, deletado, incluindo, incluido, alterando, alterado }
+enum EstadoUsuario {
+  inicial,
+  carregando,
+  carregado,
+  erro,
+  deletando,
+  deletado,
+  incluindo,
+  incluido,
+  alterando,
+  alterado,
+}
 
 class UsuarioViewModel extends ChangeNotifier {
-  final UsuarioService _service = UsuarioService();
+  final UsuarioService _service = UsuarioService(dao: UsuarioDaoImpl());
 
   List<Usuario> _usuarios = [];
   List<Usuario> get usuarios => _usuarios;
@@ -71,7 +84,10 @@ class UsuarioViewModel extends ChangeNotifier {
           e,
           StackTrace.current,
           reason: "Tantou remover usuário",
-          information: ["ID do usuário: $id", "Mensagem de erro: $_mensagemErro"],
+          information: [
+            "ID do usuário: $id",
+            "Mensagem de erro: $_mensagemErro",
+          ],
           fatal: false,
           // identifier: 'EMPRESA | $id',
         );

@@ -1,3 +1,4 @@
+import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
 import 'package:db_sqlite/model/finan_categoria.dart';
 import 'package:db_sqlite/model/finan_lancamento.dart';
 import 'package:db_sqlite/model/finan_tipo.dart';
@@ -25,7 +26,9 @@ class FinanLancamentoViewModel extends ChangeNotifier {
   final FinanLancamentoService _service = FinanLancamentoService();
   final FinanTipoService _tipoService = FinanTipoService();
   final FinanCategoriaService _categoriaService = FinanCategoriaService();
-  final UsuarioService _usuarioService = UsuarioService();
+  final UsuarioService _usuarioService = UsuarioService(
+    dao: UsuarioDaoImpl(),
+  );
 
   List<FinanTipo> _tipos = [];
   List<FinanCategoria> _categorias = [];

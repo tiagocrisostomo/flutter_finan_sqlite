@@ -1,8 +1,10 @@
-import 'package:db_sqlite/database/dao/usuario_dao.dart';
+import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
 import 'package:db_sqlite/model/usuario.dart';
 
 class UsuarioService {
-  final UsuarioDAO _dao = UsuarioDAO();
+  final UsuarioDaoImpl _dao;
+
+  UsuarioService({required UsuarioDaoImpl dao}) : _dao = dao;
 
   Future<void> salvarOuAtualizarUsuario(Usuario usuario) async {
     if (usuario.id == null) {

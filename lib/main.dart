@@ -1,10 +1,11 @@
 // Importações nativas do Dart
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
 // Importações do projeto e pacotes externos
 import 'package:db_sqlite/database/seed.dart';
 import 'package:db_sqlite/main_app.dart';
+import 'package:db_sqlite/service/auth_service.dart';
 import 'package:db_sqlite/utils/inicializacao.dart';
 import 'package:db_sqlite/viewmodel/auth_viewmodel.dart';
 import 'package:db_sqlite/viewmodel/conectividade_check_viewmodel.dart';
@@ -13,6 +14,8 @@ import 'package:db_sqlite/viewmodel/finan_lancamento_viewmodel.dart';
 import 'package:db_sqlite/viewmodel/finan_tipo_viewmodel.dart';
 import 'package:db_sqlite/viewmodel/trocar_tema_viewmodel.dart';
 import 'package:db_sqlite/viewmodel/usuario_viewmodel.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// Função principal do app
 void main() async {
@@ -34,7 +37,14 @@ void main() async {
     MultiProvider(
       providers: [
         // Providers responsáveis pelo gerenciamento de estado das ViewModels
-        ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(
+          create:
+              (_) => AuthViewModel(
+                authService: AuthService(
+                  usuarioDao: UsuarioDaoImpl(),
+                ),
+              ),
+        ),
         ChangeNotifierProvider(create: (_) => UsuarioViewModel()),
         ChangeNotifierProvider(create: (_) => FinanTipoViewModel()),
         ChangeNotifierProvider(create: (_) => FinanCategoriaViewModel()),

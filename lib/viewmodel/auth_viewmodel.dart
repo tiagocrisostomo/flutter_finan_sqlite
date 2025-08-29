@@ -8,13 +8,14 @@ import 'package:flutter/foundation.dart';
 enum EstadoAuth { inicial, logando, logado, erro }
 
 class AuthViewModel extends ChangeNotifier {
-  final AuthService _authService = AuthService();
+  final AuthService _authService;
+
+  AuthViewModel({required AuthService authService})
+    : _authService = authService;
 
   Usuario? usuarioLogado;
-
   EstadoAuth _estado = EstadoAuth.inicial;
   EstadoAuth get estadoAuth => _estado;
-
   String? _mensagemErro;
   String? get mensagemErro => _mensagemErro;
 

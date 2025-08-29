@@ -1,11 +1,13 @@
-import 'package:db_sqlite/database/dao/usuario_dao.dart';
+import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
 import 'package:db_sqlite/model/usuario.dart';
 
 class AuthService {
-  final UsuarioDAO _dao = UsuarioDAO();
+  final UsuarioDaoImpl _usuarioDao;
+
+  AuthService({required UsuarioDaoImpl usuarioDao}) : _usuarioDao = usuarioDao;
 
   Future<Usuario?> login(String nome, String senha) async {
-    final usuario = await _dao.buscarPorNomeSenha(nome, senha);
+    final usuario = await _usuarioDao.buscarPorNomeSenha(nome, senha);
     if (usuario != null) {
       return usuario;
     }
