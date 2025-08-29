@@ -1,11 +1,25 @@
-import 'package:db_sqlite/model/finan_categoria.dart';
+import 'package:db_sqlite/data/model/finan_categoria.dart';
 import 'package:db_sqlite/service/finan_categoria_service.dart';
 import 'package:flutter/material.dart';
 
-enum EstadoFinanCategoria { inicial, carregando, carregado, erro, deletando, deletado, incluindo, incluido, alterando, alterado }
+enum EstadoFinanCategoria {
+  inicial,
+  carregando,
+  carregado,
+  erro,
+  deletando,
+  deletado,
+  incluindo,
+  incluido,
+  alterando,
+  alterado,
+}
 
 class FinanCategoriaViewModel extends ChangeNotifier {
-  final FinanCategoriaService _service = FinanCategoriaService();
+  final FinanCategoriaService _service;
+
+  FinanCategoriaViewModel({required FinanCategoriaService service})
+    : _service = service;
 
   List<FinanCategoria> _finanCategorias = [];
   List<FinanCategoria> get finanCategorias => _finanCategorias;
@@ -39,11 +53,18 @@ class FinanCategoriaViewModel extends ChangeNotifier {
 
   Future<void> adicionarCategoria(FinanCategoria finanCategoria) async {
     bool isNovo = finanCategoria.id == null;
-    _estado = isNovo ? EstadoFinanCategoria.incluindo : EstadoFinanCategoria.alterando;
+    _estado =
+        isNovo
+            ? EstadoFinanCategoria.incluindo
+            : EstadoFinanCategoria.alterando;
+
     notifyListeners();
     try {
       await _service.salvarOuAtualizarCategoria(finanCategoria);
-      _estado = isNovo ? EstadoFinanCategoria.incluido : EstadoFinanCategoria.alterado;
+      _estado =
+          isNovo
+              ? EstadoFinanCategoria.incluido
+              : EstadoFinanCategoria.alterado;
     } catch (e) {
       _estado = EstadoFinanCategoria.erro;
       _mensagemErro = "Erro ao adicionar categoria: $e";
@@ -58,6 +79,7 @@ class FinanCategoriaViewModel extends ChangeNotifier {
     try {
       await _service.deletarCategoria(id);
       _estado = EstadoFinanCategoria.deletado;
+      notifyListeners();
     } catch (e) {
       _estado = EstadoFinanCategoria.erro;
       _mensagemErro = "Erro ao remover categoria: $e";
@@ -68,7 +90,8 @@ class FinanCategoriaViewModel extends ChangeNotifier {
 
   Future<void> buscarCategoriaId(int id) async {
     try {
-      _categoriaSelecionada = (await _service.buscarCategoriaPorId(id)).firstOrNull;
+      _categoriaSelecionada =
+          (await _service.buscarCategoriaPorId(id)).firstOrNull;
       notifyListeners();
     } catch (e) {
       _estado = EstadoFinanCategoria.erro;

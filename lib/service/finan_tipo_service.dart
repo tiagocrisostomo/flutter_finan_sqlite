@@ -1,8 +1,10 @@
-import 'package:db_sqlite/database/dao/finan_tipo_dao.dart';
-import 'package:db_sqlite/model/finan_tipo.dart';
+import 'package:db_sqlite/data/interface/finan_tipo_dao_impl.dart';
+import 'package:db_sqlite/data/model/finan_tipo.dart';
 
 class FinanTipoService {
-  final FinanTipoDAO _dao = FinanTipoDAO();
+  final FinanTipoDaoImpl _dao;
+
+  FinanTipoService({required FinanTipoDaoImpl dao}) : _dao = dao;
 
   Future<void> salvarOuAtualizarTipo(FinanTipo finanTipo) async {
     if (finanTipo.id == null) {

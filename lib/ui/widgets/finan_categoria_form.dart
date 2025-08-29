@@ -1,4 +1,4 @@
-import 'package:db_sqlite/model/finan_categoria.dart';
+import 'package:db_sqlite/data/model/finan_categoria.dart';
 import 'package:db_sqlite/viewmodel/finan_categoria_viewmodel.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_colorpicker/flutter_colorpicker.dart';

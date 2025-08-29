@@ -1,4 +1,4 @@
-import 'package:db_sqlite/model/finan_tipo.dart';
+import 'package:db_sqlite/data/model/finan_tipo.dart';
 import 'package:db_sqlite/viewmodel/finan_tipo_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
-import 'package:db_sqlite/model/usuario.dart';
+import 'package:db_sqlite/data/model/usuario.dart';
 import 'package:db_sqlite/service/usuario_service.dart';
 import 'package:db_sqlite/utils/logger_service.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,9 @@ enum EstadoUsuario {
 }
 
 class UsuarioViewModel extends ChangeNotifier {
-  final UsuarioService _service = UsuarioService(dao: UsuarioDaoImpl());
+  final UsuarioService _service;
+
+  UsuarioViewModel({required UsuarioService service}) : _service = service;
 
   List<Usuario> _usuarios = [];
   List<Usuario> get usuarios => _usuarios;

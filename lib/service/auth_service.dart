@@ -1,5 +1,5 @@
-import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
-import 'package:db_sqlite/model/usuario.dart';
+import 'package:db_sqlite/data/interface/usuario_dao_impl.dart';
+import 'package:db_sqlite/data/model/usuario.dart';
 
 class AuthService {
   final UsuarioDaoImpl _usuarioDao;

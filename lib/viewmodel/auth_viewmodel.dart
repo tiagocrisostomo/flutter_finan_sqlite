@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:db_sqlite/model/usuario.dart';
+import 'package:db_sqlite/data/model/usuario.dart';
 import 'package:db_sqlite/service/auth_service.dart';
 import 'package:db_sqlite/utils/logger_service.dart';
 import 'package:flutter/foundation.dart';

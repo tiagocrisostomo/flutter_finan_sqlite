@@ -1,4 +1,4 @@
-import 'package:db_sqlite/model/finan_tipo.dart';
+import 'package:db_sqlite/data/model/finan_tipo.dart';
 import 'package:db_sqlite/service/finan_tipo_service.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +18,9 @@ enum EstadoFinanTipo {
 }
 
 class FinanTipoViewModel extends ChangeNotifier {
-  final FinanTipoService _service = FinanTipoService();
+  final FinanTipoService _service;
 
-  List<FinanTipo> _finanTipos = [];
-  List<FinanTipo> get finanTipos => _finanTipos;
+  FinanTipoViewModel({required FinanTipoService service}) : _service = service;
 
   List<FinanTipo> _finanTodosTipos = [];
   List<FinanTipo> get finanTodosTipos => _finanTodosTipos;
@@ -34,75 +33,6 @@ class FinanTipoViewModel extends ChangeNotifier {
 
   String? _mensagemErro;
   String? get mensagemErro => _mensagemErro;
-
-  // Variáveis para o Lazy Loading
-  final int _pageSize = 14;
-  int _offset = 0;
-  bool _hasMoreItems = true;
-  bool get hasMoreItems => _hasMoreItems;
-
-  Future<void> carregarTipos() async {
-    // Evita carregamento duplo
-    if (_estado == EstadoFinanTipo.carregando) return;
-
-    _estado = EstadoFinanTipo.carregando;
-    notifyListeners();
-
-    _offset = 0; // Reseta o offset para carregar do início
-    _hasMoreItems = true;
-
-    try {
-      final newTipos = await _service.getTipos(
-        limit: _pageSize,
-        offset: _offset,
-      );
-
-      _finanTipos = newTipos;
-      if (newTipos.length < _pageSize) {
-        _hasMoreItems = false;
-      } else {
-        _offset += _pageSize;
-      }
-
-      _estado = EstadoFinanTipo.carregado;
-    } catch (e) {
-      _estado = EstadoFinanTipo.erro;
-      _mensagemErro = "Erro ao carregar tipos: $e";
-    } finally {
-      notifyListeners();
-    }
-  }
-
-  Future<void> carregarMaisTipos() async {
-    // Evita carregamento duplo ou se não houver mais itens
-    if (!_hasMoreItems || _estado == EstadoFinanTipo.carregandoMais) {
-      return;
-    }
-
-    _estado = EstadoFinanTipo.carregandoMais;
-    notifyListeners();
-
-    try {
-      final newTipos = await _service.getTipos(
-        limit: _pageSize,
-        offset: _offset,
-      );
-
-      if (newTipos.isEmpty) {
-        _hasMoreItems = false;
-      } else {
-        _finanTipos.addAll(newTipos);
-        _offset += newTipos.length;
-      }
-
-      _estado = EstadoFinanTipo.carregadoMais;
-    } catch (e) {
-      _estado = EstadoFinanTipo.erro;
-      _mensagemErro = "Erro ao carregar mais tipos: $e";
-    } finally {
-      notifyListeners();
-    }
-  }
 
   Future<void> carregarTodosTipos() async {
     if (_estado == EstadoFinanTipo.carregando) return;
@@ -152,7 +82,6 @@ class FinanTipoViewModel extends ChangeNotifier {
   Future<void> buscarTipoId(int id) async {
     try {
       _finanTipo = await _service.buscarTipoPorId(id);
-      notifyListeners();
     } catch (e) {
       _estado = EstadoFinanTipo.erro;
       _mensagemErro = "Erro ao consultar tipo: $e";
@@ -165,6 +94,6 @@ class FinanTipoViewModel extends ChangeNotifier {
     _mensagemErro = null;
     _estado = EstadoFinanTipo.inicial;
     notifyListeners();
-    carregarTipos();
+    carregarTodosTipos();
   }
 }

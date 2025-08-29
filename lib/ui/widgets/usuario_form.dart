@@ -1,4 +1,4 @@
-import 'package:db_sqlite/model/usuario.dart';
+import 'package:db_sqlite/data/model/usuario.dart';
 import 'package:db_sqlite/viewmodel/usuario_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

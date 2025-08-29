@@ -10,6 +10,7 @@ class FinanLancamento {
   String tipoDescricao; // Descrição do tipo
   String usuarioNome; // Nome do usuário associado a este lançamento
 
+
   FinanLancamento({
     required this.id,
     required this.descricao,
@@ -47,6 +48,7 @@ class FinanLancamento {
       'tipoId': tipoId,
       'categoriaId': categoriaId,
       'usuarioId': usuarioId,
+
     };
   }
 }

@@ -14,8 +14,6 @@ class FinanTipoScreen extends StatefulWidget {
 }
 
 class _FinanTipoScreenState extends State<FinanTipoScreen> {
-  // final ScrollController _scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
@@ -25,29 +23,7 @@ class _FinanTipoScreenState extends State<FinanTipoScreen> {
         listen: false,
       ).carregarTodosTipos();
     });
-    // _scrollController.addListener(_onScroll);
   }
-
-  // @override
-  // void dispose() {
-  //   // 4. Remover o listener e dispor o controller
-  //   _scrollController.removeListener(_onScroll);
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
-
-  // void _onScroll() {
-  //   final store = Provider.of<FinanTipoViewModel>(context, listen: false);
-  //   // Verifica se a posição atual de rolagem é maior ou igual à máxima
-  //   // e se o estado atual não é de carregamento.
-  //   if (_scrollController.position.pixels >=
-  //           _scrollController.position.maxScrollExtent - 200 &&
-  //       store.estado != EstadoFinanTipo.carregando &&
-  //       store.estado != EstadoFinanTipo.carregandoMais &&
-  //       store.hasMoreItems) {
-  //     store.carregarTodosTipos();
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +35,7 @@ class _FinanTipoScreenState extends State<FinanTipoScreen> {
         context: context,
         mensagem: store.mensagemErro!,
         cor: Colors.red,
-        limparerro: store.limparErro,
+        limparerro: () => store.limparErro(),
       );
     }
 
@@ -68,7 +44,7 @@ class _FinanTipoScreenState extends State<FinanTipoScreen> {
         context: context,
         mensagem: 'Deletado',
         cor: Colors.orange,
-        limparerro: store.limparErro,
+        limparerro: () => store.limparErro(),
       );
     }
 
@@ -76,7 +52,7 @@ class _FinanTipoScreenState extends State<FinanTipoScreen> {
       mostrarSnackBar(
         context: context,
         mensagem: 'Cadastrado',
-        limparerro: store.limparErro,
+        limparerro: () => store.limparErro(),
       );
     }
 
@@ -85,145 +61,138 @@ class _FinanTipoScreenState extends State<FinanTipoScreen> {
         context: context,
         mensagem: 'Alterado',
         cor: Colors.blue,
-        limparerro: store.limparErro,
+        limparerro: () => store.limparErro(),
       );
     }
 
     Widget corpo;
 
-    // 6. Ajustar a lógica de exibição para lidar com o novo estado
-    if (store.estado == EstadoFinanTipo.carregando &&
-        store.finanTipos.isEmpty) {
-      corpo = const Center(child: CircularProgressIndicator());
-    } else if (store.finanTipos.isEmpty && !store.hasMoreItems) {
-      // Condição para quando não há itens
-      corpo = const Center(child: Text('Nenhum tipo encontrado.'));
-    } else {
-      // 7. Modificar o ListView.builder para suportar o lazy loading
-      corpo = RefreshIndicator(
-        onRefresh: store.carregarTodosTipos, // Permite "puxar para recarregar"
-        child: CustomScrollView(
-          shrinkWrap: true,
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            SliverAppBar(
-              pinned: true,
-              title: Text('Tipos de Finanças'),
-              actions: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.add_box_rounded,
-                    color: Colors.black,
-                    size: 35,
-                  ),
-                  onPressed: () => context.pushRtL(FormularioFinanTipo()),
+    switch (store.estado) {
+      case EstadoFinanTipo.carregando:
+        corpo = Center(
+          child: CircularProgressIndicator(semanticsLabel: 'Carregando...'),
+        );
+        break;
+      case EstadoFinanTipo.deletando:
+        corpo = Center(
+          child: CircularProgressIndicator(semanticsLabel: 'Deletando...'),
+        );
+        break;
+      case EstadoFinanTipo.incluindo:
+        corpo = Center(
+          child: CircularProgressIndicator(semanticsLabel: 'Incluindo...'),
+        );
+        break;
+      case EstadoFinanTipo.alterando:
+        corpo = Center(
+          child: CircularProgressIndicator(semanticsLabel: 'Alterando...'),
+        );
+        break;
+      case EstadoFinanTipo.carregado:
+        corpo = RefreshIndicator(
+          onRefresh: store.carregarTodosTipos,
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(8),
+            itemCount: store.finanTodosTipos.length,
+            itemBuilder: (_, index) {
+              final tipo = store.finanTodosTipos[index];
+              return Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 4,
+                  bottom: 4,
                 ),
-              ],
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                childCount: store.finanTodosTipos.length,
-                (context, index) {
-                  final tipo = store.finanTodosTipos[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(
-                      left: 16,
-                      right: 16,
-                      top: 4,
-                      bottom: 4,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                    top: 2,
+                    bottom: 1,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: Colors.blueGrey, width: 0.5),
+                  ),
+                  isThreeLine: false,
+                  dense: true,
+                  leading: CircleAvatar(
+                    backgroundColor: corAleatoria(tipo.id!.toString()),
+                    foregroundColor: Colors.white,
+                    child:
+                        tipo.id != null
+                            ? Text(tipo.id.toString())
+                            : Icon(Icons.playlist_add_check_circle_sharp),
+                  ),
+                  title: Text(tipo.descricao ?? ''),
+                  trailing: Container(
+                    height: MediaQuery.sizeOf(context).height * 0.04,
+                    decoration: BoxDecoration(
+                      // color: Colors.black,
+                      borderRadius: BorderRadius.circular(6),
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.black26,
+                      //     blurRadius: 4,
+                      //     offset: Offset(0, 2),
+                      //   ),
+                      // ],
                     ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                        top: 2,
-                        bottom: 1,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: const BorderSide(
-                          color: Colors.blueGrey,
-                          width: 0.5,
-                        ),
-                      ),
-                      isThreeLine: false,
-                      dense: true,
-                      leading: CircleAvatar(
-                        backgroundColor: corAleatoria(tipo.id!.toString()),
-                        foregroundColor: Colors.white,
-                        child:
-                            tipo.id != null
-                                ? Text(tipo.id.toString())
-                                : const Icon(
-                                  Icons.playlist_add_check_circle_sharp,
-                                ),
-                      ),
-                      title: Text(tipo.descricao ?? ''),
-                      trailing: Container(
-                        height: MediaQuery.sizeOf(context).height * 0.04,
-                        decoration: BoxDecoration(
-                          // color: Colors.black,
-                          borderRadius: BorderRadius.circular(6),
-                          // boxShadow: const [
-                          //   BoxShadow(
-                          //     color: Colors.black26,
-                          //     blurRadius: 4,
-                          //     offset: Offset(0, 2),
-                          //   ),
-                          // ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(
-                                Icons.edit_square,
-                                color: Colors.blue,
-                                size: 16,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.edit_square,
+                            color: Colors.blue,
+                            size: 16,
+                          ),
+                          onPressed:
+                              () => context.pushRtL(
+                                FormularioFinanTipo(tipo: tipo),
                               ),
-                              onPressed:
-                                  () => context.pushRtL(
-                                    FormularioFinanTipo(tipo: tipo),
-                                  ),
-                            ),
-                            const VerticalDivider(),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.delete_forever,
-                                color: Colors.red,
-                                size: 16,
-                              ),
-                              onPressed:
-                                  () =>
-                                      _confirmarExclusaoTipo(context, tipo.id!),
-                            ),
-                          ],
                         ),
-                      ),
+                        VerticalDivider(),
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete_forever,
+                            color: Colors.red,
+                            size: 16,
+                          ),
+                          onPressed:
+                              () => _confirmarExclusaoTipo(context, tipo.id!),
+                        ),
+                      ],
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      );
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      default:
+        corpo = Center(
+          child: CircularProgressIndicator(semanticsLabel: 'Padrão...'),
+        );
     }
+
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Tipos de Finanças'),
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(
-      //         Icons.add_box_rounded,
-      //         color: Colors.black,
-      //         applyTextScaling: true,
-      //         size: 35,
-      //       ),
-      //       onPressed: () => context.pushRtL(FormularioFinanTipo()),
-      //     ),
-      //   ],
-      // ),
+      appBar: AppBar(
+        title: Text('Tipos'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.add_box_rounded,
+              color: Colors.grey.shade300,
+              applyTextScaling: true,
+              size: 35,
+            ),
+            onPressed: () => context.pushRtL(FormularioFinanTipo()),
+          ),
+        ],
+      ),
       body: corpo,
     );
   }
@@ -267,7 +236,7 @@ class _FinanTipoScreenState extends State<FinanTipoScreen> {
                     ),
                   ),
                 ),
-                child: Text('Excluir'),
+                child: const Text('Excluir'),
               ),
             ],
           ),

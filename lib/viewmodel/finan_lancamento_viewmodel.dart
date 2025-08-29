@@ -1,8 +1,10 @@
-import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
-import 'package:db_sqlite/model/finan_categoria.dart';
-import 'package:db_sqlite/model/finan_lancamento.dart';
-import 'package:db_sqlite/model/finan_tipo.dart';
-import 'package:db_sqlite/model/usuario.dart';
+import 'package:db_sqlite/data/interface/finan_categoria_dao_impl.dart';
+import 'package:db_sqlite/data/interface/finan_tipo_dao_impl.dart';
+import 'package:db_sqlite/data/interface/usuario_dao_impl.dart';
+import 'package:db_sqlite/data/model/finan_categoria.dart';
+import 'package:db_sqlite/data/model/finan_lancamento.dart';
+import 'package:db_sqlite/data/model/finan_tipo.dart';
+import 'package:db_sqlite/data/model/usuario.dart';
 import 'package:db_sqlite/service/finan_categoria_service.dart';
 import 'package:db_sqlite/service/finan_lancamento_service.dart';
 import 'package:db_sqlite/service/finan_tipo_service.dart';
@@ -23,9 +25,17 @@ enum EstadoLancamento {
 }
 
 class FinanLancamentoViewModel extends ChangeNotifier {
-  final FinanLancamentoService _service = FinanLancamentoService();
-  final FinanTipoService _tipoService = FinanTipoService();
-  final FinanCategoriaService _categoriaService = FinanCategoriaService();
+  final FinanLancamentoService _service;
+
+  FinanLancamentoViewModel({required FinanLancamentoService service})
+    : _service = service;
+
+  final FinanTipoService _tipoService = FinanTipoService(
+    dao: FinanTipoDaoImpl(),
+  );
+  final FinanCategoriaService _categoriaService = FinanCategoriaService(
+    dao: FinanCategoriaDaoImpl(),
+  );
   final UsuarioService _usuarioService = UsuarioService(
     dao: UsuarioDaoImpl(),
   );

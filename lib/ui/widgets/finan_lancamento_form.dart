@@ -1,4 +1,4 @@
-import 'package:db_sqlite/model/finan_lancamento.dart';
+import 'package:db_sqlite/data/model/finan_lancamento.dart';
 import 'package:db_sqlite/viewmodel/finan_categoria_viewmodel.dart';
 import 'package:db_sqlite/viewmodel/finan_lancamento_viewmodel.dart';
 import 'package:db_sqlite/viewmodel/finan_tipo_viewmodel.dart';
@@ -270,6 +270,8 @@ class _FinanLancamentoFormState extends State<FinanLancamentoForm> {
                         tipoId: _tipoId!,
                         categoriaId: _categoriaId!,
                         usuarioId: _usuarioId!,
+
+
                       ),
                     );
                     if (context.mounted) Navigator.pop(context);

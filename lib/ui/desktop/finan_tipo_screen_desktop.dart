@@ -18,30 +18,10 @@ class _FinanTipoScreenDesktopState extends State<FinanTipoScreenDesktop> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<FinanTipoViewModel>(context, listen: false).carregarTipos();
+      Provider.of<FinanTipoViewModel>(context, listen: false).carregarTodosTipos();
     });
-    _scrollController.addListener(_onScroll);
   }
 
-  @override
-  void dispose() {
-    // 4. Remover o listener e dispor o controller
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    final store = Provider.of<FinanTipoViewModel>(context, listen: false);
-    // Verifica se a posição atual de rolagem é maior ou igual à máxima
-    // e se o estado atual não é de carregamento.
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200 &&
-        store.estado != EstadoFinanTipo.carregando &&
-        store.estado != EstadoFinanTipo.carregandoMais &&
-        store.hasMoreItems) {
-      store.carregarMaisTipos();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,24 +107,24 @@ class _FinanTipoScreenDesktopState extends State<FinanTipoScreenDesktop> {
     Widget corpo;
 
     // 6. Ajustar a lógica de exibição para lidar com o novo estado
-    if (store.estado == EstadoFinanTipo.carregando && store.finanTipos.isEmpty) {
+    if (store.estado == EstadoFinanTipo.carregando && store.finanTodosTipos.isEmpty) {
       corpo = const Center(child: CircularProgressIndicator());
-    } else if (store.finanTipos.isEmpty && !store.hasMoreItems) {
+    } else if (store.finanTodosTipos.isEmpty) {
       // Condição para quando não há itens
       corpo = const Center(child: Text('Nenhum tipo encontrado.'));
     } else {
       // 7. Modificar o ListView.builder para suportar o lazy loading
       corpo = RefreshIndicator(
         onRefresh: () async {
-          await store.carregarTipos();
+          await store.carregarTodosTipos();
         }, // Permite "puxar para recarregar"
         child: ListView.builder(
           controller: _scrollController,
           padding: const EdgeInsets.all(8),
-          itemCount: store.finanTipos.length + (store.hasMoreItems ? 1 : 0),
+          itemCount: store.finanTodosTipos.length,
           itemBuilder: (_, index) {
             // Se o index for o último, exibe o indicador de carregamento
-            if (index == store.finanTipos.length) {
+            if (index == store.finanTodosTipos.length) {
               return const Padding(
                 padding: EdgeInsets.all(0),
                 child: Center(
@@ -155,7 +135,7 @@ class _FinanTipoScreenDesktopState extends State<FinanTipoScreenDesktop> {
               );
             }
             // Caso contrário, exibe o item normalmente
-            final tipo = store.finanTipos[index];
+            final tipo = store.finanTodosTipos[index];
             return Container(
               padding: const EdgeInsets.all(2),
               child: ListTile(

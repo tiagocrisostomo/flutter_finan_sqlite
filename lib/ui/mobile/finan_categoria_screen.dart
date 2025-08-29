@@ -90,84 +90,88 @@ class _FinanCategoriaScreenState extends State<FinanCategoriaScreen> {
         );
         break;
       case EstadoFinanCategoria.carregado:
-        corpo = ListView.builder(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(8),
-          itemCount: store.finanCategorias.length,
-          itemBuilder: (_, index) {
-            final cat = store.finanCategorias[index];
-            return Padding(
-              padding: const EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: 4,
-                bottom: 4,
-              ),
-              child: ListTile(
-                contentPadding: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  top: 2,
-                  bottom: 1,
+        corpo = RefreshIndicator(
+          onRefresh: store.carregarCategorias,
+          child: ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(8),
+            itemCount: store.finanCategorias.length,
+            itemBuilder: (_, index) {
+              final cat = store.finanCategorias[index];
+              return Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 4,
+                  bottom: 4,
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.blueGrey, width: 0.5),
-                ),
-                isThreeLine: false,
-                dense: true,
-                leading: CircleAvatar(
-                  backgroundColor: corAleatoria(cat.id!.toString()),
-                  foregroundColor: Colors.white,
-                  child:
-                      cat.id != null
-                          ? Text(cat.id.toString())
-                          : Icon(Icons.playlist_add_check_circle_sharp),
-                ),
-                title: Text(cat.descricao ?? ''),
-                trailing: Container(
-                  height: MediaQuery.sizeOf(context).height * 0.04,
-                  decoration: BoxDecoration(
-                    // color: Colors.black,
-                    borderRadius: BorderRadius.circular(6),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     color: Colors.black26,
-                    //     blurRadius: 4,
-                    //     offset: Offset(0, 2),
-                    //   ),
-                    // ],
+                child: ListTile(
+                  contentPadding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                    top: 2,
+                    bottom: 1,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.edit_square,
-                          color: Colors.blue,
-                          size: 16,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(color: Colors.blueGrey, width: 0.5),
+                  ),
+                  isThreeLine: false,
+                  dense: true,
+                  leading: CircleAvatar(
+                    backgroundColor: corAleatoria(cat.id!.toString()),
+                    foregroundColor: Colors.white,
+                    child:
+                        cat.id != null
+                            ? Text(cat.id.toString())
+                            : Icon(Icons.playlist_add_check_circle_sharp),
+                  ),
+                  title: Text(cat.descricao ?? ''),
+                  trailing: Container(
+                    height: MediaQuery.sizeOf(context).height * 0.04,
+                    decoration: BoxDecoration(
+                      // color: Colors.black,
+                      borderRadius: BorderRadius.circular(6),
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.black26,
+                      //     blurRadius: 4,
+                      //     offset: Offset(0, 2),
+                      //   ),
+                      // ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.edit_square,
+                            color: Colors.blue,
+                            size: 16,
+                          ),
+                          onPressed:
+                              () => context.pushRtL(
+                                FormularioFinanCategoria(categoria: cat),
+                              ),
                         ),
-                        onPressed:
-                            () => context.pushRtL(
-                              FormularioFinanCategoria(categoria: cat),
-                            ),
-                      ),
-                      VerticalDivider(),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete_forever,
-                          color: Colors.red,
-                          size: 16,
+                        VerticalDivider(),
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete_forever,
+                            color: Colors.red,
+                            size: 16,
+                          ),
+                          onPressed:
+                              () =>
+                                  _confirmarExclusaoCategoria(context, cat.id!),
                         ),
-                        onPressed:
-                            () => _confirmarExclusaoCategoria(context, cat.id!),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         );
         break;
       default:
@@ -181,9 +185,9 @@ class _FinanCategoriaScreenState extends State<FinanCategoriaScreen> {
         title: Text('Categoria de Finanças'),
         actions: [
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.add_box_rounded,
-              color: Colors.black,
+              color: Colors.grey.shade300,
               applyTextScaling: true,
               size: 35,
             ),

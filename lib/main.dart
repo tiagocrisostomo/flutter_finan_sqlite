@@ -1,11 +1,18 @@
 // Importações nativas do Dart
 import 'dart:io';
 
-import 'package:db_sqlite/database/dao/usuario_dao_impl.dart';
+import 'package:db_sqlite/data/interface/finan_categoria_dao_impl.dart';
+import 'package:db_sqlite/data/interface/finan_lancamento_dao_impl.dart';
+import 'package:db_sqlite/data/interface/finan_tipo_dao_impl.dart';
+import 'package:db_sqlite/data/interface/usuario_dao_impl.dart';
 // Importações do projeto e pacotes externos
-import 'package:db_sqlite/database/seed.dart';
+import 'package:db_sqlite/data/seed.dart';
 import 'package:db_sqlite/main_app.dart';
 import 'package:db_sqlite/service/auth_service.dart';
+import 'package:db_sqlite/service/finan_categoria_service.dart';
+import 'package:db_sqlite/service/finan_lancamento_service.dart';
+import 'package:db_sqlite/service/finan_tipo_service.dart';
+import 'package:db_sqlite/service/usuario_service.dart';
 import 'package:db_sqlite/utils/inicializacao.dart';
 import 'package:db_sqlite/viewmodel/auth_viewmodel.dart';
 import 'package:db_sqlite/viewmodel/conectividade_check_viewmodel.dart';
@@ -45,10 +52,38 @@ void main() async {
                 ),
               ),
         ),
-        ChangeNotifierProvider(create: (_) => UsuarioViewModel()),
-        ChangeNotifierProvider(create: (_) => FinanTipoViewModel()),
-        ChangeNotifierProvider(create: (_) => FinanCategoriaViewModel()),
-        ChangeNotifierProvider(create: (_) => FinanLancamentoViewModel()),
+        ChangeNotifierProvider(
+          create:
+              (_) => UsuarioViewModel(
+                service: UsuarioService(
+                  dao: UsuarioDaoImpl(),
+                ),
+              ),
+        ),
+        ChangeNotifierProvider(
+          create:
+              (_) => FinanTipoViewModel(
+                service: FinanTipoService(
+                  dao: FinanTipoDaoImpl(),
+                ),
+              ),
+        ),
+        ChangeNotifierProvider(
+          create:
+              (_) => FinanCategoriaViewModel(
+                service: FinanCategoriaService(
+                  dao: FinanCategoriaDaoImpl(),
+                ),
+              ),
+        ),
+        ChangeNotifierProvider(
+          create:
+              (_) => FinanLancamentoViewModel(
+                service: FinanLancamentoService(
+                  dao: FinanLancamentoDaoImpl(),
+                ),
+              ),
+        ),
         ChangeNotifierProvider(create: (_) => ConnectivityViewModel()),
         ChangeNotifierProvider(create: (_) => TrocarTemaViewModel()),
       ],

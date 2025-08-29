@@ -1,44 +1,64 @@
-import 'package:db_sqlite/database/banco_de_dados.dart';
-import 'package:db_sqlite/model/finan_categoria.dart';
+import 'package:db_sqlite/data/banco_de_dados.dart';
+import 'package:db_sqlite/data/interface/finan_categoria_dao.dart';
+import 'package:db_sqlite/data/model/finan_categoria.dart';
 import 'package:sqflite/sqflite.dart';
 
-class FinanCategoriaDAO {
+class FinanCategoriaDaoImpl implements FinanCategoriaDao {
   static const _tableName = 'finan_categoria';
 
+  @override
   Future<void> salvar(FinanCategoria finanCategoria) async {
     final db = await BancoDeDados.banco;
     await db.insert(_tableName, finanCategoria.toMap());
   }
 
+  @override
   Future<List<FinanCategoria>> listarTodos() async {
     final db = await BancoDeDados.banco;
     final resultado = await db.query(_tableName);
     return resultado.map((e) => FinanCategoria.fromMap(e)).toList();
   }
 
-  Future<int> atualizar(FinanCategoria finanCategoria) async {
+  @override
+  Future<void> atualizar(FinanCategoria finanCategoria) async {
     final db = await BancoDeDados.banco;
-    return await db.update(_tableName, finanCategoria.toMap(),
-    where: 'id = ?', whereArgs: [finanCategoria.id]);
+    await db.update(
+      _tableName,
+      finanCategoria.toMap(),
+      where: 'id = ?',
+      whereArgs: [finanCategoria.id],
+    );
   }
 
-  Future<int> deletar(int id) async {
+  @override
+  Future<void> deletar(int id) async {
     final db = await BancoDeDados.banco;
-    return await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
+    await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
   }
 
+  @override
   Future<List<FinanCategoria>> buscarPorId(int id) async {
     final db = await BancoDeDados.banco;
-    final resultado = await db.query(_tableName, where: 'id = ?', whereArgs: [id]);
+    final resultado = await db.query(
+      _tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
     if (resultado.isNotEmpty) {
       return resultado.map((e) => FinanCategoria.fromMap(e)).toList();
     }
     return [];
   }
 
+  @override
   Future<bool> verificarUso(int id) async {
     final db = await BancoDeDados.banco;
-    final resultado = await db.query('finan_lancamento', columns: ['COUNT(*)'], where: 'categoriaId = ?', whereArgs: [id]);
+    final resultado = await db.query(
+      'finan_lancamento',
+      columns: ['COUNT(*)'],
+      where: 'categoriaId = ?',
+      whereArgs: [id],
+    );
 
     // debugPrint('Resultado  USO: $resultado');
 
@@ -49,10 +69,15 @@ class FinanCategoriaDAO {
     return false;
   }
 
+  @override
   Future<bool> verificarPadrao(int? id) async {
     final db = await BancoDeDados.banco;
 
-    final resultado = await db.query(_tableName, where: 'id IN (?, ?) OR descricao IN (?, ?)', whereArgs: [1, 2, 'A Pagar', 'A Receber']);
+    final resultado = await db.query(
+      _tableName,
+      where: 'id IN (?, ?) OR descricao IN (?, ?)',
+      whereArgs: [1, 2, 'A Pagar', 'A Receber'],
+    );
 
     bool padrao = resultado.any((row) => row['id'] == id);
 

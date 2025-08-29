@@ -1,8 +1,10 @@
-import 'package:db_sqlite/database/dao/finan_lancamento_dao.dart';
-import 'package:db_sqlite/model/finan_lancamento.dart';
+import 'package:db_sqlite/data/interface/finan_lancamento_dao_impl.dart';
+import 'package:db_sqlite/data/model/finan_lancamento.dart';
 
 class FinanLancamentoService {
-  final FinanLancamentoDAO _dao = FinanLancamentoDAO();
+  final FinanLancamentoDaoImpl _dao;
+
+  FinanLancamentoService({required FinanLancamentoDaoImpl dao}) : _dao = dao;
 
   Future<void> salvarOuAtualizarLancamento(FinanLancamento lancamento) async {
     if (lancamento.id == null) {
