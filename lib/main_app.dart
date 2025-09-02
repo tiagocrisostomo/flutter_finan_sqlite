@@ -1,7 +1,7 @@
-import 'package:db_sqlite/ui/desktop/login_screen_desktop.dart';
-import 'package:db_sqlite/ui/mobile/login_screen.dart';
-import 'package:db_sqlite/ui/widgets/build_responsivo.dart';
-import 'package:db_sqlite/viewmodel/trocar_tema_viewmodel.dart';
+import 'package:db_sqlite/ui/view/desktop/login_screen_desktop.dart';
+import 'package:db_sqlite/ui/view/mobile/login_screen.dart';
+import 'package:db_sqlite/ui/widget/build_responsivo.dart';
+import 'package:db_sqlite/ui/viewmodel/trocar_tema_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';

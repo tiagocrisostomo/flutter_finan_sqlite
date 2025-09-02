@@ -1,7 +1,7 @@
 import 'package:db_sqlite/data/banco_de_dados.dart';
 import 'package:db_sqlite/data/interface/usuario_dao.dart';
 import 'package:db_sqlite/data/model/usuario.dart';
-import 'package:db_sqlite/utils/seguranca.dart';
+import 'package:db_sqlite/util/seguranca.dart';
 import 'package:sqflite/sqflite.dart';
 
 class UsuarioDaoImpl implements UsuarioDao {

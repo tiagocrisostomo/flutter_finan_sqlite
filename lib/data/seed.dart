@@ -1,5 +1,5 @@
 import 'package:db_sqlite/data/banco_de_dados.dart';
-import 'package:db_sqlite/utils/seguranca.dart';
+import 'package:db_sqlite/util/seguranca.dart';
 import 'package:flutter/foundation.dart';
 
 Future<void> inicializarBancoComDadosPadrao() async {
