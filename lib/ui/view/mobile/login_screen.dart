@@ -6,12 +6,24 @@ import 'package:provider/provider.dart';
 
 import '../../viewmodel/auth_viewmodel.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _userController = TextEditingController();
   final _senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  LoginScreen({super.key});
+  @override
+  dispose() {
+    _userController.dispose();
+    _senhaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,24 +51,6 @@ class LoginScreen extends StatelessWidget {
         );
         break;
     }
-
-    // if (store.estadoAuth == EstadoAuth.erro && store.mensagemErro != null) {
-    //   mostrarSnackBar(
-    //     context: context,
-    //     mensagem: store.mensagemErro!,
-    //     limparerro: store.limparErro,
-    //     cor: Colors.red,
-    //   );
-    // } else if (store.estadoAuth == EstadoAuth.logado) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute(builder: (_) => HomePage()),
-    //     );
-    //   });
-    // } else if (store.estadoAuth == EstadoAuth.logando) {
-    //   return Center(child: CircularProgressIndicator());
-    // }
 
     return Scaffold(
       body: Container(

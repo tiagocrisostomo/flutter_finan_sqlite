@@ -27,6 +27,12 @@ class _FormularioFinanCategoriaState extends State<FormularioFinanCategoria> {
     // _corSelecionada = widget.categoria?.cor ?? '#FF0000';
   }
 
+  @override
+  void dispose() {
+    _descricaoController.dispose();
+    super.dispose();
+  }
+
   // void _abrirSeletorDeCor() {
   //   Color pickerColor = Color(int.parse(_corSelecionada!.replaceAll("#", "0xFF")));
   //   showDialog(

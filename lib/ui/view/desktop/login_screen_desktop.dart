@@ -2,14 +2,27 @@ import 'package:db_sqlite/ui/view/desktop/home_desktop.dart';
 import 'package:db_sqlite/ui/widget/recuperacao_senha.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../viewmodel/auth_viewmodel.dart';
 
-class LoginScreenDesktop extends StatelessWidget {
+class LoginScreenDesktop extends StatefulWidget {
+  const LoginScreenDesktop({super.key});
+
+  @override
+  State<LoginScreenDesktop> createState() => _LoginScreenDesktopState();
+}
+
+class _LoginScreenDesktopState extends State<LoginScreenDesktop> {
   final _userController = TextEditingController();
   final _senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  LoginScreenDesktop({super.key});
+  @override
+  dispose() {
+    _userController.dispose();
+    _senhaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +41,25 @@ class LoginScreenDesktop extends StatelessWidget {
               horizontal: 8.0, // Inner padding for SnackBar content.
             ),
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
             elevation: 10,
             dismissDirection: DismissDirection.horizontal,
-            animation: CurvedAnimation(parent: const AlwaysStoppedAnimation(1.5), curve: Curves.easeIn),
+            animation: CurvedAnimation(
+              parent: const AlwaysStoppedAnimation(1.5),
+              curve: Curves.easeIn,
+            ),
           ),
         );
         store.limparErro();
       });
     } else if (store.estadoAuth == EstadoAuth.logado) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomePageDesktop()));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => HomePageDesktop()),
+        );
       });
     } else if (store.estadoAuth == EstadoAuth.logando) {
       return Center(child: CircularProgressIndicator());
@@ -47,7 +68,11 @@ class LoginScreenDesktop extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [Color(0xFF0f2027), Color(0xFF203A43), Color(0xFF2c5364)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          gradient: LinearGradient(
+            colors: [Color(0xFF0f2027), Color(0xFF203A43), Color(0xFF2c5364)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Center(
@@ -55,18 +80,35 @@ class LoginScreenDesktop extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.account_balance_wallet_rounded, size: 80, color: Colors.white),
+                const Icon(
+                  Icons.account_balance_wallet_rounded,
+                  size: 80,
+                  color: Colors.white,
+                ),
                 const SizedBox(height: 16),
-                const Text('ESTUDO DO TIAGO', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1.5)),
+                const Text(
+                  'ESTUDO DO TIAGO',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                const Text('Controle seus gastos de forma inteligente', style: TextStyle(fontSize: 16, color: Colors.white70)),
+                const Text(
+                  'Controle seus gastos de forma inteligente',
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                ),
                 const SizedBox(height: 32),
                 SizedBox(
                   height: size.height * 0.4,
                   width: size.width * 0.3,
                   child: Card(
                     elevation: 10,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Form(
@@ -78,15 +120,29 @@ class LoginScreenDesktop extends StatelessWidget {
                           children: [
                             TextFormField(
                               controller: _userController,
-                              decoration: const InputDecoration(prefixIcon: Icon(Icons.email), labelText: 'Usuário', border: OutlineInputBorder()),
-                              validator: (value) => value!.isEmpty ? 'Informe o usuário' : null,
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(Icons.email),
+                                labelText: 'Usuário',
+                                border: OutlineInputBorder(),
+                              ),
+                              validator:
+                                  (value) =>
+                                      value!.isEmpty
+                                          ? 'Informe o usuário'
+                                          : null,
                             ),
                             // const SizedBox(height: 16),
                             TextFormField(
                               controller: _senhaController,
-                              decoration: const InputDecoration(prefixIcon: Icon(Icons.lock), labelText: 'Senha', border: OutlineInputBorder()),
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(Icons.lock),
+                                labelText: 'Senha',
+                                border: OutlineInputBorder(),
+                              ),
                               obscureText: true,
-                              validator: (value) => value!.isEmpty ? 'Informe a senha' : null,
+                              validator:
+                                  (value) =>
+                                      value!.isEmpty ? 'Informe a senha' : null,
                             ),
                             // const SizedBox(height: 24),
                             SizedBox(
@@ -94,8 +150,12 @@ class LoginScreenDesktop extends StatelessWidget {
                               height: size.height * 0.05,
                               child: ElevatedButton.icon(
                                 onPressed: () async {
-                                  if (!_formKey.currentState!.validate()) return;
-                                  await store.login(_userController.text, _senhaController.text);
+                                  if (!_formKey.currentState!.validate())
+                                    return;
+                                  await store.login(
+                                    _userController.text,
+                                    _senhaController.text,
+                                  );
                                 },
                                 icon: const Icon(Icons.login),
                                 label: const Text('Entrar'),
@@ -103,13 +163,19 @@ class LoginScreenDesktop extends StatelessWidget {
                                   backgroundColor: const Color(0xFF1DB954),
                                   // padding: const EdgeInsets.symmetric(vertical: 16),
                                   textStyle: const TextStyle(fontSize: 16),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
                               ),
                             ),
                             // const SizedBox(height: 8),
                             TextButton(
-                              onPressed: () => showDialog(context: context, builder: (context) => RecuperacaoSenha()),
+                              onPressed:
+                                  () => showDialog(
+                                    context: context,
+                                    builder: (context) => RecuperacaoSenha(),
+                                  ),
                               child: const Text('Esqueci minha senha'),
                             ),
                           ],

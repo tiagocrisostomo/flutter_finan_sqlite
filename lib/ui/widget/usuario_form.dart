@@ -27,6 +27,14 @@ class FormularioUsuarioState extends State<FormularioUsuario> {
   }
 
   @override
+  void dispose() {
+    _nomeController.dispose();
+    _senhaController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final store = Provider.of<UsuarioViewModel>(context, listen: false);
 

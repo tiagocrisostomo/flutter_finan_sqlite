@@ -24,6 +24,12 @@ class _FormularioFinanTipoState extends State<FormularioFinanTipo> {
   }
 
   @override
+  void dispose() {
+    _nomeController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final store = Provider.of<FinanTipoViewModel>(context, listen: false);
 
